@@ -13,6 +13,129 @@
 
 <body>
 
+  <!-- Button trigger modal -->
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Agendamento de consulta</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        
+
+        <form>
+
+          <div class="row">
+
+            <!-- nome e email -->
+            <div class="col-md-6">
+              <div class="mb-2 ">
+                <label for="nome">Digite seu nome</label>
+                <input type="text" id="nome" class="form-control " placeholder="Ex: João da Silva"> 
+              </div>
+            </div>
+
+            
+            <div class="col-md-6">
+              <div class="mb-2 ">
+                <label for="nome">Digite seu nome</label>
+                <input type="email" id="email" class="form-control " placeholder="Ex: joão@gmail.com"> 
+              </div>
+            </div>
+
+            <!-- Nascimento, CPF, Whatsapp -->
+            <div class="col-md-4">
+              <div class="mb-2 ">
+                <label for="nome">Data de Nascimento</label>
+                <input type="text" id="data" class="form-control " placeholder="Ex: dd/mm/aaaa"> 
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-2 ">
+                <label for="nome">CPF</label>
+                <input type="text" id="cpf" class="form-control " placeholder="Ex: 999.999.999.99"> 
+              </div>
+            </div>
+
+            <div class="col-md-4">
+              <div class="mb-2 ">
+                <label for="nome">Whatsapp</label>
+                <input type="text" id="whatsapp" class="form-control " placeholder="Ex: (99) 99999-9999"> 
+              </div>
+            </div>
+            <!-- CEP -->
+            <div class="col-12">
+              <div class="mb-2 ">
+                <label for="nome">CEP</label>
+                <input type="text" id="cep" class="form-control " placeholder="Ex: 99.999.999"> 
+              </div>
+            </div>
+            <!-- Rua, Número, Complemento -->
+            <div class="col-md-5">
+              <div class="mb-2 ">
+                <label for="nome">Rua</label>
+                <input type="text" id="rua" class="form-control " placeholder="Ex: Rua 9"> 
+              </div>
+            </div>
+
+            <div class="col-2">
+              <div class="mb-2 ">
+                <label for="nome">Número</label>
+                <input type="text" id="numero" class="form-control " placeholder="Ex: 185"> 
+              </div>
+            </div>
+
+            <div class="col-md-5">
+              <div class="mb-2 ">
+                <label for="nome">Complemento</label>
+                <input type="text" id="complemento" class="form-control " placeholder="Ex: Casa"> 
+              </div>
+            </div>
+            <!-- Bairro, Cidade, UF -->
+            <div class="col-5">
+              <div class="mb-2 ">
+                <label for="nome">Bairro</label>
+                <input type="text" id="bairro" class="form-control " placeholder="Ex: Centro"> 
+              </div>
+            </div>
+
+            <div class="col-5">
+              <div class="mb-2 ">
+                <label for="nome">Cidade</label>
+                <input type="text" id="cidade" class="form-control " placeholder="Ex: Rio de Janeiro"> 
+              </div>
+            </div>
+
+            <div class="col-2">
+              <div class="mb-2 ">
+                <label for="nome">UF</label>
+                <input type="text" id="uf" class="form-control " placeholder="Ex: RJ"> 
+              </div>
+            </div>
+
+          </div>
+
+          <button class="btn-primary ">Agendar Consulta</button>
+        </form>
+
+      </div>
+
+      <div class="modal-footer">
+       <em>Seus dados estarão protegidos.</em>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
   <nav class="navbar navbar-expand-xl">
 
     <div class="container">
@@ -24,7 +147,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse justify-content-end  =" navbarNavDropdown">
+      <div class="collapse navbar-collapse justify-content-end"  id="navbarNavDropdown">
         <ul class="navbar-nav column-gap-5 ">
 
           <li class="nav-item">
@@ -60,7 +183,7 @@
 
         </ul>
 
-        <button class="btn btn-primary">Agendar Consulta</button>
+        <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Agendar Consulta</button>
       </div>
 
     </div>
@@ -266,9 +389,26 @@
     </div>
   </div>
 
+</div>
+
   <script src="js/bootstrap.bundle.min.js"></script>
   <script src="js/carouse.js"></script>
 
+  <!-- Mask DEPENDE da biblioteca Jquery, por isso preciso ser chamado por último -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+
+  <script>
+    //Iniciar a biblioteca Jquery
+    $(document).ready(function(){
+
+      $('#data').mask('00/00/0000');
+      $('#cpf').mask('000.000.000-00');
+      $('#whatsapp').mask('(00)00000-0000');
+      $('#cep').mask('00000-000');
+    })
+
+  </script>
 
 </body>
 
