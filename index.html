@@ -399,38 +399,166 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.20.0/jquery.validate.min.js"></script>
 
+  
+  <script>
+    //limpando o formulário ao fechar o modal
+    const myModalEl = document.getElementById('exampleModal')
+    myModalEl.addEventListener('show.bs.modal', event => {
+      
+      document.querySelector('#form-cadastro').reset();
+
+    })
+  </script>
 
   <script>
     //Iniciar a biblioteca Jquery
     $(document).ready(function(){
 
       $('#form-cadastro').validate({
-        rules : {
-          nome : {
+        rules: {
+          nome: {
             required: true,
-            minlength : 3
+            minlength: 3
           },
-
-          email : {
+          email: {
             required: true,
             email: true
+          },
+          whatsapp: {
+            required: true
+          },
+          cep: {
+            required: true
+          },
+          rua: {
+            required: true
+          },
+          bairro: {
+            required: true
+          },
+          cidade: {
+            required: true
+          },
+          uf: {
+            required: true,
+            maxlength: 2
+          },
+          data: {
+            required: true,
+            dateBR: true
+          },
+          cpf: {
+            required: true,
+            cpf: true
           }
-
         },
-
-        messages : {
-
-          nome : {
-            required : 'Preencha o campo nome',
-            minlength : 'Digite ao menos 3 caracteres'
+        messages: {
+          nome: {
+            required: 'Por favor, preencha o campo nome.',
+            minlength: 'O nome deve ter pelo menos 3 caracteres.'
           },
-
-          email : {
-            required : 'Preencha o campo e-mail',
-            email : 'Formato inválido'
+          email: {
+            required: 'Por favor, preencha o campo e-mail.',
+            email: 'Por favor, insira um e-mail válido.'
           },
+          whatsapp: {
+            required: 'Por favor, preencha o campo WhatsApp.'
+          },
+          cep: {
+            required: 'Por favor, preencha o campo CEP.'
+          },
+          rua: {
+            required: 'Por favor, preencha o campo Rua.'
+          },
+          bairro: {
+            required: 'Por favor, preencha o campo Bairro.'
+          },
+          cidade: {
+            required: 'Por favor, preencha o campo Cidade.'
+          },
+          uf: {
+            required: 'Por favor, preencha o campo UF.',
+            maxlength: 'Por favor, informe no máximo 2 caracteres para o UF.'
+          },
+          data: {
+            required: 'Por favor, preencha o campo Data de Nascimento.',
+            dateBR: 'Por favor, insira uma data de nascimento válida no formato dd/mm/aaaa.'
+          },
+          cpf: {
+            required: 'Por favor, preencha o campo CPF.',
+            cpf: 'Por favor, insira um CPF válido.'
+          }
         }
       });
+
+      // Adicionando regra customizada para validar data no formato dd/mm/aaaa
+      $.validator.addMethod(
+        "dateBR",
+        function (value, element) {
+          // Verifica o formato da data
+          if (!/^\d{2}\/\d{2}\/\d{4}$/.test(value)) return false;
+
+          // Parse da data
+          var parts = value.split('/');
+          var day = parseInt(parts[0], 10);
+          var month = parseInt(parts[1], 10);
+          var year = parseInt(parts[2], 10);
+
+          // Verifica se o ano é válido
+          if (year < 1900 || year > 2100) return false;
+
+          // Verifica se o mês é válido
+          if (month < 1 || month > 12) return false;
+
+          // Verifica se o dia é válido para o mês
+          var daysInMonth = new Date(year, month, 0).getDate();
+          if (day < 1 || day > daysInMonth) return false;
+
+          return true;
+        },
+        "Por favor, insira uma data válida no formato dd/mm/aaaa."
+      );
+
+
+      // Adicionando regra customizada para validar CPF
+      $.validator.addMethod(
+        "cpf",
+        function (value, element) {
+          // Removendo caracteres não numéricos do CPF
+          value = value.replace(/[^\d]/g, '');
+
+          // Verificando se o CPF possui 11 dígitos
+          if (value.length !== 11) return false;
+
+          // Verificando se todos os dígitos são iguais
+          if (/^(\d)\1+$/.test(value)) return false;
+
+          // Calculando o primeiro dígito verificador
+          let sum = 0;
+          for (let i = 0; i < 9; i++) {
+            sum += parseInt(value.charAt(i)) * (10 - i);
+          }
+          let mod = sum % 11;
+          let digit1 = mod < 2 ? 0 : 11 - mod;
+
+          // Verificando o primeiro dígito verificador
+          if (parseInt(value.charAt(9)) !== digit1) return false;
+
+          // Calculando o segundo dígito verificador
+          sum = 0;
+          for (let i = 0; i < 10; i++) {
+            sum += parseInt(value.charAt(i)) * (11 - i);
+          }
+          mod = sum % 11;
+          let digit2 = mod < 2 ? 0 : 11 - mod;
+
+          // Verificando o segundo dígito verificador
+          if (parseInt(value.charAt(10)) !== digit2) return false;
+
+          return true;
+        },
+        "Por favor, insira um CPF válido."
+      );
 
 
       $('#data').mask('00/00/0000');
@@ -453,14 +581,22 @@
           //"dados" -. Nome da resposta da API
           $.getJSON(`https://viacep.com.br/ws/${cepdigitado}/json/`,
             function(dados){
-              //console.log(dados);
+              console.log(dados);
+
+              //if(dados.erro != true){
+                //se não (!) verdade
+              
+              if(!dados.erro){
               $('#rua').val(dados.logradouro);
               $('#bairro').val(dados.bairro);
               $('#cidade').val(dados.localidade);
               $('#uf').val(dados.uf);
               $('numero').focus();
 
-
+            }else{
+              alert('cep não encontrado');
+            }
+            
             })
         }
 
